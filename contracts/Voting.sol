@@ -81,14 +81,10 @@ contract Voting is Ownable {
     return votes[voteId].isActive;
   }
 
-  function getStartTimeStamp(uint32 voteId) external view returns (uint256) {
-    return votes[voteId].startTimestamp;
-  } 
-
-  function getEndTimeStamp(uint32 voteId) external view returns (uint256) {
-    uint256 endTimestamp = 3 days + votes[voteId].startTimestamp;
-    return endTimestamp;
-  } 
+  function getTimeRemaining(uint32 voteId) external view returns (uint256) {
+    uint256 timeRemaining = votes[voteId].startTimestamp + 3 days - block.timestamp;
+    return timeRemaining;
+  }
 
   function _maxArrayValue(uint32[] memory array) pure internal returns (uint32) {
     uint32 largest = 0; 
