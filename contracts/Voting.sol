@@ -96,8 +96,11 @@ contract Voting is Ownable {
   }
 
   function getTimeRemaining(uint32 voteId) external view returns (uint256) {
-    uint256 timeRemaining = votes[voteId].startTimestamp + 3 days - block.timestamp;
-    return timeRemaining;
+    if (votes[voteId].startTimestamp + 3 days >= block.timestamp) {
+      return votes[voteId].startTimestamp + 3 days - block.timestamp;
+    } else {
+      return 0;
+    }
   }
 
   function _maxArrayValue(uint32[] memory array) pure internal returns (uint32) {
