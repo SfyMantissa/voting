@@ -22,6 +22,11 @@ contract Voting is Ownable {
     address winner;
   }
 
+  event VoteIsCreated(uint32 voteId);
+  event VoterHasVoted(uint32 voteId, address voter, address nominee);
+  event VoteHasEnded(uint32 voteId, address winner, uint256 prize);
+  event Withdrawal(uint32 voteId, address owner, uint256 commission);
+
   function startVote() external onlyOwner {
     uint32 voteId = voteCount++;
     uint256 _startTimestamp = block.timestamp;
@@ -29,6 +34,8 @@ contract Voting is Ownable {
 
     _vote.startTimestamp = _startTimestamp;
     _vote.isActive = true;
+
+    emit VoteIsCreated(voteId);
   }
   
   function vote(uint32 voteId, address nominee) external payable {
@@ -50,7 +57,9 @@ contract Voting is Ownable {
 
     if (_vote.nomineeToVoteCount[nominee] >= _maxArrayValue(_vote.totalVotesPerNominee)) {
       _vote.currentLeader = nominee;
-    }
+    } 
+
+    emit VoterHasVoted(voteId, msg.sender, nominee);
   }
 
   function endVote(uint32 voteId) external {
@@ -60,12 +69,17 @@ contract Voting is Ownable {
 
     uint256 prize = (address(this).balance / 100) * 90;
     address payable winner = payable(votes[voteId].winner);
+
+    emit VoteHasEnded(voteId, winner, prize);
     winner.transfer(prize);
+
   }
 
   function withdraw(uint32 voteId) external onlyOwner {
     require(!votes[voteId].isActive, "This vote is not over yet :)");
     address payable _owner = payable(address(uint160(owner())));
+
+    emit Withdrawal(voteId, msg.sender, address(this).balance);
     _owner.transfer(address(this).balance);
   }
 
