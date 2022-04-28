@@ -65,7 +65,6 @@ contract Voting is Ownable {
         "Oops, that vote no longer accepts new votes :("
     );
     require(!_vote.voterHasVoted[msg.sender], "You can only vote once :)");
-    require(_vote.isActive, "This vote is over :)");
     require(msg.value == 0.01 ether, "The voting fee is 0.01 ETH.");
 
     if (_vote.nomineeToVoteCount[nominee] == 0) {
