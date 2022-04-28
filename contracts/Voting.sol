@@ -160,7 +160,9 @@ contract Voting is Ownable {
     view
     returns (uint256)
   {
-    if (votes[voteId].startTimestamp + 3 days >= block.timestamp) {
+    if (votes[voteId].isActive == false) {
+      return 0;
+    } else if (votes[voteId].startTimestamp + 3 days >= block.timestamp) {
       return votes[voteId].startTimestamp + 3 days - block.timestamp;
     } else {
       return 0;
