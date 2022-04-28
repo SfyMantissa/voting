@@ -102,9 +102,9 @@ contract Voting is Ownable {
     votes[voteId].winner = votes[voteId].currentLeader;
     uint256 prize = (address(this).balance / 100) * 90;
     address payable winner = payable(votes[voteId].winner);
-    winner.transfer(prize);
 
     emit VoteHasEnded(voteId, winner, prize);
+    winner.transfer(prize);
   }
   
   /// @notice Withdraw the commission.
@@ -113,9 +113,9 @@ contract Voting is Ownable {
   function withdraw(uint32 voteId) external onlyOwner {
     require(!votes[voteId].isActive, "This vote is not over yet :)");
     address payable _owner = payable(address(uint160(owner())));
-    _owner.transfer(address(this).balance);
 
     emit Withdrawal(voteId, msg.sender, address(this).balance);
+    _owner.transfer(address(this).balance);
   }
 
   /// @notice Get the list of everyone who voted.
@@ -128,6 +128,7 @@ contract Voting is Ownable {
   {
     return votes[voteId].participants;
   }
+
   /// @notice Get the address of the vote's winner.
   /// @param voteId Integer which represents index of the vote.
   /// @return Winner address.
