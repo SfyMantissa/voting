@@ -1,7 +1,7 @@
 {
   "name": "voting",
   "version": "1.0.0",
-  "description": "Voting with prize for the winner and commission for the owner.",
+  "description": "Voting with prize.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
