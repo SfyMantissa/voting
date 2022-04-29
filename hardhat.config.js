@@ -13,7 +13,7 @@ const { getTimeRemaining } = require('./tasks/getTimeRemaining');
 
 module.exports = {
   solidity: "0.8.4",
-  defaultNetwork: "rinkeby",
+  // defaultNetwork: "rinkeby",
   networks: {
     rinkeby: {
       url: process.env.ALCHEMY_KEY,
