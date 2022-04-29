@@ -1,0 +1,24 @@
+{
+  "name": "voting",
+  "version": "1.0.0",
+  "description": "Voting with prize for the winner and commission for the owner.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sfy Mantissa",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "chai": "^4.3.6",
+    "ethers": "^5.6.4",
+    "hardhat": "^2.9.3",
+    "hardhat-ethers": "^1.0.1",
+    "solidity-coverage": "^0.7.21"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.5.0",
+    "dotenv": "^16.0.0"
+  }
+}
