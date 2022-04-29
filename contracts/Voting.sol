@@ -95,7 +95,7 @@ contract Voting is Ownable {
   ///      Winner receives 90% of all ETH deposited.
   function finish(uint32 voteId) external {
     require(
-        block.timestamp >= votes[voteId].startTimestamp + 3 days,
+        block.timestamp > votes[voteId].startTimestamp + 3 days,
         "Oops, the vote cannot be ended prematurely :("
     );
     votes[voteId].isActive = false;
