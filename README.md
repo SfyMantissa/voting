@@ -2,15 +2,15 @@
 
 ## Features (smart contract)
 
-[x] Only *owner* can start the vote.
-[x] Vote lasts for 3 days.
-[x] Any user can vote for any other user.
-[x] Voting fee is 0.01 ETH.
-[x] A single user can vote only once.
-[x] After 3 days from the vote's start, any user can end the vote.
-[x] Winner receives 90% of total ETH collected. Remaining 10% of total ETH are left untouched.
-[x] Only *owner* may withdraw the remaining 10% of total ETH.
-[x] Any user can fetch information about a particular vote.
+- [x] Only *owner* can start the vote.
+- [x] Vote lasts for 3 days.
+- [x] Any user can vote for any other user.
+- [x] Voting fee is 0.01 ETH.
+- [x] A single user can vote only once.
+- [x] After 3 days from the vote's start, any user can end the vote.
+- [x] Winner receives 90% of total ETH collected. Remaining 10% of total ETH are left untouched.
+- [x] Only *owner* may withdraw the remaining 10% of total ETH.
+- [x] Any user can fetch information about a particular vote.
 
 ## Features (JS scripts)
 
