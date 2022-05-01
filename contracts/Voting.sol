@@ -100,7 +100,7 @@ contract Voting is Ownable {
     );
     votes[voteId].isActive = false;
     votes[voteId].winner = votes[voteId].currentLeader;
-    uint256 prize = (address(this).balance / 100) * 90;
+    uint256 prize = (address(this).balance * 90) / 100;
     address payable winner = payable(votes[voteId].winner);
 
     emit VoteHasEnded(voteId, winner, prize);
