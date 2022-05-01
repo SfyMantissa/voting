@@ -62,7 +62,7 @@ My contract is not perfect. I constantly work on refining my craft and thus I as
     E.g. if I want 90% of 10 and first divide by 100, then I get 0.
     On the other hand, if I would do (value * 90) / 100, the percentage is correct.
 
-4. _withdraw(uint32 voteId)_: redundant address payable cast
+4. ~~_withdraw(uint32 voteId)_: redundant address payable cast~~ **FIXED @ff02b63c212425367641cdb8944def898d03b536**
 
     ![](todo/4.png)
 
