@@ -44,6 +44,8 @@ voteId is 2, voter is 0x9271EfD9709270334721f58f722DDc5C8Ee0E3DF, nominee is 0x5
 
 My contract is not perfect. I constantly work on refining my craft and thus I ask senior colleagues for suggestions. And I don't blatantly copy/paste suggestions but try to get a deep understanding of my own mistakes so that I don't repeat them in the future.
 
+**Core functionality works exactly like explained above, all to do's are mere improvements.**
+
 **Thanks to my friend Arthur who pointed out the issues.**
 
 1. _uint32_ usage where _uint256_ could be used
