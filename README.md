@@ -36,3 +36,36 @@ module.exports = votingAddress;
 sfy@neonblaze: ~/repos/voting ❱❱ npx hardhat vote --voteid 2 --nominee '0x53b5Dd95992F7C197bCe8a9Dc92546CD83B39a98' --fee 10000000000000000 --network rinkeby
 voteId is 2, voter is 0x9271EfD9709270334721f58f722DDc5C8Ee0E3DF, nominee is 0x53b5Dd95992F7C197bCe8a9Dc92546CD83B39a98
 ```
+
+## To do
+
+> "Practice doesn't make perfect. Practice reduces the imperfection."
+> _Toba Beta, "Master Of Stupidity"_
+
+My contract is not perfect. I constantly work on refining my craft and thus I ask senior colleagues for suggestions. And I don't blatantly copy/paste suggestions but try to get a deep understanding of my own mistakes so that I don't repeat them in the future.
+
+**Thanks to my friend Arthur who pointed out the issues.**
+
+1. _uint32_ usage where _uint256_ could be used
+
+    ![](todo/1.png)
+
+2. _vote(uint32 voteId, address nominee)_: suboptimal logic
+
+    ![](todo/2.png)
+
+3. ~~_finish(uint32 voteId)_: incorrect arithmetic operations order~~ **FIXED @5186e80ff7719b2d984280aac2ef30e848f3abc2**
+
+    ![](todo/3.png)
+
+    Explaination: Solidity uses integer-based arithmetic. As a result when I divide before multiplying, I may lose precision.
+    E.g. if I want 90% of 10 and first divide by 100, then I get 0.
+    On the other hand, if I would do (value * 90) / 100, the percentage is correct.
+
+4. _withdraw(uint32 voteId)_: redundant address payable cast
+
+    ![](todo/4.png)
+
+5. _withdraw(uint32 voteId)_: vulnerability
+
+    ![](todo/5.png)
