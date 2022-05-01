@@ -112,7 +112,7 @@ contract Voting is Ownable {
   /// @dev Owner receives 10% of all ETH deposited.
   function withdraw(uint32 voteId) external onlyOwner {
     require(!votes[voteId].isActive, "This vote is not over yet :)");
-    address payable _owner = payable(address(uint160(owner())));
+    address payable _owner = payable(owner());
 
     emit Withdrawal(voteId, msg.sender, address(this).balance);
     _owner.transfer(address(this).balance);
