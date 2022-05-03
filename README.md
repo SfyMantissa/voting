@@ -74,6 +74,9 @@ My contract is not perfect. I constantly work on refining my craft and thus I as
     Explanation: initial cast was taken from the CryptoZombies tutorial.
     I blindly repeated it, despite the fact that in Solidiy 0.8.1^ such a cast is redundant. 
 
-5. _withdraw(uint32 voteId)_: vulnerability
+5. ~~_withdraw(uint32 voteId)_: vulnerability~~ **FIXED @f3d19c38c069bbb78deff71e83fa6e0a5d286e7a**
 
     ![](todo/5.png)
+
+    Explanation: withdrawing directly from address(this).balance means that all votes share balance.
+    This is not correct hence all votes must have separate balances.
