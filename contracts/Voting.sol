@@ -17,6 +17,7 @@ contract Voting is Ownable {
     mapping(address => uint256) nomineeToVoteCount;
     address[] participants;
     uint256[] totalVotesPerNominee;
+    uint256 balance;
     uint256 nomineeCount;
     uint256 startTimestamp;
     bool isActive;
@@ -72,6 +73,7 @@ contract Voting is Ownable {
       _vote.totalVotesPerNominee.push(0);
     }
 
+    _vote.balance += 10000000000000000;
     _vote.participants.push(msg.sender);
     _vote.nomineeToVoteCount[nominee]++;
     _vote.voterHasVoted[msg.sender] = true;
@@ -94,14 +96,16 @@ contract Voting is Ownable {
   ///      set to "false" and prize getting sent.
   ///      Winner receives 90% of all ETH deposited.
   function finish(uint256 voteId) external {
+    Vote storage _vote = votes[voteId];
     require(
-        block.timestamp > votes[voteId].startTimestamp + 3 days,
+        block.timestamp > _vote.startTimestamp + 3 days,
         "Oops, the vote cannot be ended prematurely :("
     );
-    votes[voteId].isActive = false;
-    votes[voteId].winner = votes[voteId].currentLeader;
-    uint256 prize = (address(this).balance * 90) / 100;
-    address payable winner = payable(votes[voteId].winner);
+    _vote.isActive = false;
+    _vote.winner = _vote.currentLeader;
+    uint256 prize = (_vote.balance * 90) / 100;
+    _vote.balance = _vote.balance - prize;
+    address payable winner = payable(_vote.winner);
 
     emit VoteHasEnded(voteId, winner, prize);
     winner.transfer(prize);
@@ -111,11 +115,13 @@ contract Voting is Ownable {
   /// @param voteId Integer which represents index of the vote.
   /// @dev Owner receives 10% of all ETH deposited.
   function withdraw(uint256 voteId) external onlyOwner {
-    require(!votes[voteId].isActive, "This vote is not over yet :)");
+    Vote storage _vote = votes[voteId];
+    require(!_vote.isActive, "This vote is not over yet :)");
     address payable _owner = payable(owner());
+    uint256 commission = _vote.balance;
 
-    emit Withdrawal(voteId, msg.sender, address(this).balance);
-    _owner.transfer(address(this).balance);
+    emit Withdrawal(voteId, msg.sender, commission);
+    _owner.transfer(commission);
   }
 
   /// @notice Get the list of everyone who voted.
