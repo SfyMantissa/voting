@@ -48,9 +48,12 @@ My contract is not perfect. I constantly work on refining my craft and thus I as
 
 **Thanks to my friend Arthur who pointed out the issues.**
 
-1. _uint32_ usage where _uint256_ could be used
+1. ~~_uint32_ usage where _uint256_ could be used~~ **FIXED @6830500a56bff33309375301352e7ebfce49f324**
 
     ![](todo/1.png)
+
+    Explanation: memory slots in Solidity are 256 bytes based.
+    Using lesser uint sizes makes sense mainly if adjacent declarations fit in 256 bytes or if lesser-sized variables are required by proposed logic.
 
 2. _vote(uint32 voteId, address nominee)_: suboptimal logic
 
@@ -60,13 +63,16 @@ My contract is not perfect. I constantly work on refining my craft and thus I as
 
     ![](todo/3.png)
 
-    Explaination: Solidity uses integer-based arithmetic. As a result when I divide before multiplying, I may lose precision.
+    Explanation: Solidity uses integer-based arithmetic. As a result when I divide before multiplying, I may lose precision.
     E.g. if I want 90% of 10 and first divide by 100, then I get 0.
     On the other hand, if I would do (value * 90) / 100, the percentage is correct.
 
 4. ~~_withdraw(uint32 voteId)_: redundant address payable cast~~ **FIXED @ff02b63c212425367641cdb8944def898d03b536**
 
     ![](todo/4.png)
+
+    Explanation: initial cast was taken from the CryptoZombies tutorial.
+    I blindly repeated it, despite the fact that in Solidiy 0.8.1^ such a cast is redundant. 
 
 5. _withdraw(uint32 voteId)_: vulnerability
 
