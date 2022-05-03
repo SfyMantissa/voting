@@ -55,9 +55,15 @@ My contract is not perfect. I constantly work on refining my craft and thus I as
     Explanation: memory slots in Solidity are 256 bytes based.
     Using lesser uint sizes makes sense mainly if adjacent declarations fit in 256 bytes or if lesser-sized variables are required by proposed logic.
 
-2. _vote(uint32 voteId, address nominee)_: suboptimal logic
+2. ~~_vote(uint32 voteId, address nominee)_: suboptimal logic~~ **FIXED: @59e1cf6ed5150a28e694d666e30376fabe80827b**
 
     ![](todo/2.png)
+
+    Explanation: previously the contract stored number of votes in relation to every nominee in an array.
+    Then max value of that array would be calculated and nominee with the most votes becoming the currentLeader.
+    That logic was suboptimal because as number of elements in the array grew, the gas cost of calculations did too.
+    Now there is a uint256 maxVotes variable, which just stores the max number of votes a nominee has.
+    By comparing number of votes a nominee has with that maxVotes variable the currentLeader is assigned.
 
 3. ~~_finish(uint32 voteId)_: incorrect arithmetic operations order~~ **FIXED @5186e80ff7719b2d984280aac2ef30e848f3abc2**
 
