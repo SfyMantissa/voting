@@ -43,7 +43,10 @@ contract Voting is Ownable {
   /// @notice Start the vote.
   /// @dev Each consequent vote has an index incremented by 1 starting at 0.
   ///      Multiple votes may occur simultaneously.
-  function addVoting() external onlyOwner {
+  function addVoting()
+    external
+    onlyOwner
+  {
     uint256 voteId = voteCount++;
     uint256 _startTimestamp = block.timestamp;
     Vote storage _vote = votes[voteId];
@@ -59,7 +62,10 @@ contract Voting is Ownable {
   /// @dev Take notice of multiple require statements.
   ///      If multiple nominees have the same amount of votes, the one, for
   ///      whom the vote was placed last is considered the currentLeader.
-  function vote(uint256 voteId, address nominee) external payable {
+  function vote(uint256 voteId, address nominee)
+    external
+    payable
+  {
     Vote storage _vote = votes[voteId];
     require(
         block.timestamp <= _vote.startTimestamp + 3 days,
@@ -95,7 +101,9 @@ contract Voting is Ownable {
   ///      is concluded. "Conclusion/finish of the vote" == isActive getting
   ///      set to "false" and prize getting sent.
   ///      Winner receives 90% of all ETH deposited.
-  function finish(uint256 voteId) external {
+  function finish(uint256 voteId)
+    external
+  {
     Vote storage _vote = votes[voteId];
     require(
         block.timestamp > _vote.startTimestamp + 3 days,
@@ -114,7 +122,10 @@ contract Voting is Ownable {
   /// @notice Withdraw the commission.
   /// @param voteId Integer which represents index of the vote.
   /// @dev Owner receives 10% of all ETH deposited.
-  function withdraw(uint256 voteId) external onlyOwner {
+  function withdraw(uint256 voteId)
+    external
+    onlyOwner
+  {
     Vote storage _vote = votes[voteId];
     require(!_vote.isActive, "This vote is not over yet :)");
     address payable _owner = payable(owner());
