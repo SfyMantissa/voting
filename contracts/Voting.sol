@@ -8,16 +8,16 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 /// @title Voting with prize for the winner and commission for the owner.
 contract Voting is Ownable {
 
-  uint32 voteCount;
-  mapping(uint32 => Vote) votes;
+  uint256 voteCount;
+  mapping(uint256 => Vote) votes;
 
   struct Vote {
-    mapping(address => uint32) nomineeIndex;
+    mapping(address => uint256) nomineeIndex;
     mapping(address => bool) voterHasVoted;
-    mapping(address => uint32) nomineeToVoteCount;
+    mapping(address => uint256) nomineeToVoteCount;
     address[] participants;
-    uint32[] totalVotesPerNominee;
-    uint32 nomineeCount;
+    uint256[] totalVotesPerNominee;
+    uint256 nomineeCount;
     uint256 startTimestamp;
     bool isActive;
     address currentLeader;
@@ -25,25 +25,25 @@ contract Voting is Ownable {
   }
 
   /// @notice Gets triggered upon creation of a new vote by the owner.
-  event VoteIsCreated(uint32 voteId);
+  event VoteIsCreated(uint256 voteId);
 
   /// @notice Gets triggered upon a successful vote by the owner or any other
   ///         user.
-  event VoterHasVoted(uint32 voteId, address voter, address nominee);
+  event VoterHasVoted(uint256 voteId, address voter, address nominee);
 
   /// @notice Gets triggered upon a succcessful finish of a vote by the owner
   ///         or any other user.
-  event VoteHasEnded(uint32 voteId, address winner, uint256 prize);
+  event VoteHasEnded(uint256 voteId, address winner, uint256 prize);
 
   /// @notice Gets triggered upon a successful comission withdrawal by the
   ///         owner after the vote is over.
-  event Withdrawal(uint32 voteId, address owner, uint256 commission);
+  event Withdrawal(uint256 voteId, address owner, uint256 commission);
 
   /// @notice Start the vote.
   /// @dev Each consequent vote has an index incremented by 1 starting at 0.
   ///      Multiple votes may occur simultaneously.
   function addVoting() external onlyOwner {
-    uint32 voteId = voteCount++;
+    uint256 voteId = voteCount++;
     uint256 _startTimestamp = block.timestamp;
     Vote storage _vote = votes[voteId];
     _vote.startTimestamp = _startTimestamp;
@@ -58,7 +58,7 @@ contract Voting is Ownable {
   /// @dev Take notice of multiple require statements.
   ///      If multiple nominees have the same amount of votes, the one, for
   ///      whom the vote was placed last is considered the currentLeader.
-  function vote(uint32 voteId, address nominee) external payable {
+  function vote(uint256 voteId, address nominee) external payable {
     Vote storage _vote = votes[voteId];
     require(
         block.timestamp <= _vote.startTimestamp + 3 days,
@@ -93,7 +93,7 @@ contract Voting is Ownable {
   ///      is concluded. "Conclusion/finish of the vote" == isActive getting
   ///      set to "false" and prize getting sent.
   ///      Winner receives 90% of all ETH deposited.
-  function finish(uint32 voteId) external {
+  function finish(uint256 voteId) external {
     require(
         block.timestamp > votes[voteId].startTimestamp + 3 days,
         "Oops, the vote cannot be ended prematurely :("
@@ -110,7 +110,7 @@ contract Voting is Ownable {
   /// @notice Withdraw the commission.
   /// @param voteId Integer which represents index of the vote.
   /// @dev Owner receives 10% of all ETH deposited.
-  function withdraw(uint32 voteId) external onlyOwner {
+  function withdraw(uint256 voteId) external onlyOwner {
     require(!votes[voteId].isActive, "This vote is not over yet :)");
     address payable _owner = payable(owner());
 
@@ -121,7 +121,7 @@ contract Voting is Ownable {
   /// @notice Get the list of everyone who voted.
   /// @param voteId Integer which represents index of the vote.
   //  @return An array of voter addresses.
-  function getParticipants(uint32 voteId) 
+  function getParticipants(uint256 voteId) 
     external
     view
     returns (address[] memory)
@@ -132,7 +132,7 @@ contract Voting is Ownable {
   /// @notice Get the address of the vote's winner.
   /// @param voteId Integer which represents index of the vote.
   /// @return Winner address.
-  function getWinner(uint32 voteId)
+  function getWinner(uint256 voteId)
     external
     view
     returns (address) 
@@ -144,7 +144,7 @@ contract Voting is Ownable {
   /// @param voteId Integer which represents index of the vote.
   /// @return Bool flag which is true if the vote is not concluded and
   ///         false otherwise.
-  function getIsActive(uint32 voteId)
+  function getIsActive(uint256 voteId)
     external
     view
     returns (bool)
@@ -155,7 +155,7 @@ contract Voting is Ownable {
   /// @notice Get the time remaining until the vote stops accepting votes.
   /// @param voteId Integer which represents index of the vote.
   /// @return Time remaining in seconds; 0 if votes are no longer accepted.
-  function getTimeRemaining(uint32 voteId)
+  function getTimeRemaining(uint256 voteId)
     external
     view
     returns (uint256)
@@ -169,17 +169,17 @@ contract Voting is Ownable {
     }
   }
 
-  /// @notice Get the maximum value in an uint32 array.
-  /// @param array An uint32 array.
+  /// @notice Get the maximum value in an uint256 array.
+  /// @param array An uint256 array.
   /// @return Integer which represents the maximum value.
-  function maxArrayValue(uint32[] memory array)
+  function maxArrayValue(uint256[] memory array)
     internal
     pure
-    returns (uint32) 
+    returns (uint256) 
   {
-    uint32 max = 0; 
+    uint256 max = 0; 
 
-    for(uint32 i = 0; i < array.length; i++) {
+    for(uint256 i = 0; i < array.length; i++) {
       if(array[i] > max) {
         max = array[i]; 
       } 
