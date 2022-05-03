@@ -12,13 +12,12 @@ contract Voting is Ownable {
   mapping(uint256 => Vote) votes;
 
   struct Vote {
-    mapping(address => uint256) nomineeIndex;
     mapping(address => bool) voterHasVoted;
     mapping(address => uint256) nomineeToVoteCount;
     address[] participants;
-    uint256[] totalVotesPerNominee;
     uint256 balance;
     uint256 nomineeCount;
+    uint256 maxVotes;
     uint256 startTimestamp;
     bool isActive;
     address currentLeader;
@@ -74,22 +73,15 @@ contract Voting is Ownable {
     require(!_vote.voterHasVoted[msg.sender], "You can only vote once :)");
     require(msg.value == 0.01 ether, "The voting fee is 0.01 ETH.");
 
-    if (_vote.nomineeToVoteCount[nominee] == 0) {
-      _vote.nomineeIndex[nominee] = _vote.nomineeCount++;
-      _vote.totalVotesPerNominee.push(0);
-    }
-
     _vote.balance += 10000000000000000;
     _vote.participants.push(msg.sender);
     _vote.nomineeToVoteCount[nominee]++;
     _vote.voterHasVoted[msg.sender] = true;
-    _vote.totalVotesPerNominee[_vote.nomineeIndex[nominee]] 
-        = _vote.nomineeToVoteCount[nominee];
-
-    if (_vote.nomineeToVoteCount[nominee] 
-        >= maxArrayValue(_vote.totalVotesPerNominee)) {
+    
+    if (_vote.nomineeToVoteCount[nominee] > _vote.maxVotes) {
+      _vote.maxVotes = _vote.nomineeToVoteCount[nominee];
       _vote.currentLeader = nominee;
-    } 
+    }
 
     emit VoterHasVoted(voteId, msg.sender, nominee);
   }
@@ -184,24 +176,5 @@ contract Voting is Ownable {
     } else {
       return 0;
     }
-  }
-
-  /// @notice Get the maximum value in an uint256 array.
-  /// @param array An uint256 array.
-  /// @return Integer which represents the maximum value.
-  function maxArrayValue(uint256[] memory array)
-    internal
-    pure
-    returns (uint256) 
-  {
-    uint256 max = 0; 
-
-    for(uint256 i = 0; i < array.length; i++) {
-      if(array[i] > max) {
-        max = array[i]; 
-      } 
-    }
-
-    return max;
   }
 }
