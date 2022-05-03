@@ -106,9 +106,9 @@ contract Voting is Ownable {
     uint256 prize = (_vote.balance * 90) / 100;
     _vote.balance = _vote.balance - prize;
     address payable winner = payable(_vote.winner);
+    winner.transfer(prize);
 
     emit VoteHasEnded(voteId, winner, prize);
-    winner.transfer(prize);
   }
   
   /// @notice Withdraw the commission.
@@ -119,9 +119,9 @@ contract Voting is Ownable {
     require(!_vote.isActive, "This vote is not over yet :)");
     address payable _owner = payable(owner());
     uint256 commission = _vote.balance;
+    _owner.transfer(commission);
 
     emit Withdrawal(voteId, msg.sender, commission);
-    _owner.transfer(commission);
   }
 
   /// @notice Get the list of everyone who voted.
